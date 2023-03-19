@@ -28,21 +28,33 @@ import { useForm } from 'react-hook-form';
 
 import api from 'services/api'
 
-import {useRouter} from 'next/router'
+import { useRouter } from 'next/router'
 
 export default function Page() {
 
     const router = useRouter()
 
-    const [file, setFile] = React.useState(null)
+    // const [file, setFile] = React.useState(null)
 
-    const [body, setBody] = React.useState("")
+    // const [body, setBody] = React.useState("")
 
     const {
         register,
         handleSubmit,
+        watch,
+        setValue,
         formState: { errors },
     } = useForm();
+
+    register('body',{required: true})
+    register('file',{required: true})
+
+    const body = watch('body')
+    const file = watch('file')
+
+    React.useEffect(()=>{
+        handleSubmit()
+    },[body,file])
 
     const modules = {
         toolbar: [
@@ -62,9 +74,8 @@ export default function Page() {
     ];
 
     const onSubmit = async (data) => {
-        console.log(data)
-
-        const {title, excerpt, status} = data
+        const {title, excerpt, status, body, file} = data
+        // return console.log(data, errors)
         
         Swal.fire({
             title: 'Loading',
@@ -85,11 +96,10 @@ export default function Page() {
 
             const { data } = await api.post(`/api/admin/post`, formData)
 
-            Swal.fire({
+            await Swal.fire({
                 title: 'Success',
                 text: 'Artikel berhasil dibuat',
                 icon: 'success',
-                timer: 2000,
             });
 
             router.push('/admin/post')
@@ -122,23 +132,15 @@ export default function Page() {
                             flexDirection="column"
                         >
                             <Input placeholder="Judul"
-                                // value={post.title}
-                                // onChange={e => {
-                                //     setPost({ ...post, title: e.target.value })
-                                // }}
                                 {...register('title',{required:true})}
                             />
-                            {errors.title && <Text>Harus diisi.</Text>}
+                            {errors.title && <Text color="red">Harus diisi.</Text>}
                         </Flex>
                         <Flex py="12px" flexDirection="column">
                             <Input placeholder="Singkat"
-                                // value={post.excerpt}
-                                // onChange={e => {
-                                //     setPost({ ...post, excerpt: e.target.value })
-                                // }}
                                 {...register('excerpt',{required:true})}
                             />
-                            {errors.excerpt && <Text>Harus diisi.</Text>}
+                            {errors.excerpt && <Text color="red">Harus diisi.</Text>}
                         </Flex>
                         <Flex py="12px" flexDirection="column">
                             <Select placeholder='Status'
@@ -147,15 +149,12 @@ export default function Page() {
                                 <option value='PUBLISHED'>PUBLISHED</option>
                                 <option value='DRAFT'>DRAFT</option>
                             </Select>
-                            {errors.status && <Text>Harus diisi.</Text>}
+                            {errors.status && <Text color="red">Harus diisi.</Text>}
                         </Flex>
                         <Flex py="12px" flexDirection="column">
                             <FilePicker
                                 onFileChange={(fileList) => {
-                                    // do stuff here 
-                                    // setFile()
-                                    // console.log(fileList)
-                                    setFile(fileList[0])
+                                    setValue('file',fileList[0])
                                 }}
                                 value={file}
                                 placeholder="Thumbnail"
@@ -166,15 +165,17 @@ export default function Page() {
 
                             // ref = { myRef }
                             />  
+                            {errors.file && <Text color="red">Harus diisi.</Text>}
                         </Flex>
                         <Flex py="12px" flexDirection="column">
                             <ReactQuill modules={modules}
                                 formats={formats} theme="snow" 
                                 value={body} 
                                 onChange={value => {
-                                    setBody(value)
+                                    setValue('body',value)
                                 }} 
                                 />
+                                {errors.body && <Text color="red">Harus diisi.</Text>}
                         </Flex>
                         <Flex mt="48px" justifyContent="flex-end">
                             <Button

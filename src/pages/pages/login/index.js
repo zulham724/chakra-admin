@@ -78,7 +78,7 @@ export default function SignIn() {
             {
                 email: credential.email,
                 password: credential.password,
-                callbackUrl: `/admin/default`
+                callbackUrl: `/admin/post`
             },
         )
     }
@@ -115,7 +115,7 @@ export default function SignIn() {
                     mx={{ base: 'auto', lg: 'unset' }}
                     me='auto'
                     mb={{ base: '20px', md: 'auto' }}>
-                    <Button
+                    {/* <Button
                         fontSize='sm'
                         me='0px'
                         mb='26px'
@@ -130,11 +130,11 @@ export default function SignIn() {
                         _focus={googleActive}>
                         <Icon as={FcGoogle} w='20px' h='20px' me='10px' />
                         Sign in with Google
-                    </Button>
+                    </Button> */}
                     <Flex align='center' mb='25px'>
                         <HSeparator />
                         <Text color='gray.400' mx='14px'>
-                            or
+                            login
                         </Text>
                         <HSeparator />
                     </Flex>
@@ -191,19 +191,19 @@ export default function SignIn() {
                                     Keep me logged in
                                 </FormLabel>
                             </FormControl>
-                            <Link href='/auth/forgot-password'>
+                            {/* <Link href='/auth/forgot-password'>
                                 <a>
                                     <Text color={textColorBrand} fontSize='sm' w='124px' fontWeight='500'>
                                         Forgot password?
                                     </Text>
                                 </a>
-                            </Link>
+                            </Link> */}
                         </Flex>
                         <Button onClick={handleSubmit} isLoading={loading} fontSize='sm' variant='brand' fontWeight='500' w='100%' h='50' mb='24px'>
                             Sign In
                         </Button>
                     </FormControl>
-                    <Flex flexDirection='column' justifyContent='center' alignItems='start' maxW='100%' mt='0px'>
+                    {/* <Flex flexDirection='column' justifyContent='center' alignItems='start' maxW='100%' mt='0px'>
                         <Text color={textColorDetails} fontWeight='400' fontSize='14px'>
                             Not registered yet?
                             <Link href='/auth/sign-up'>
@@ -214,7 +214,7 @@ export default function SignIn() {
                                 </a>
                             </Link>
                         </Text>
-                    </Flex>
+                    </Flex> */}
                 </Flex>
             </Flex>
         </DefaultAuthLayout>

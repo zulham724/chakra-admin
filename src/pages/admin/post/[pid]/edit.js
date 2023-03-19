@@ -98,11 +98,10 @@ export default function Page() {
 
             const { data } = await api.post(`/api/admin/post/${pid}`, formData)
 
-            Swal.fire({
+            await Swal.fire({
                 title: 'Success',
-                text: 'Artikel berhasil dibuat',
+                text: 'Artikel berhasil diperbarui',
                 icon: 'success',
-                timer: 2000,
             });
 
             router.push('/admin/post')

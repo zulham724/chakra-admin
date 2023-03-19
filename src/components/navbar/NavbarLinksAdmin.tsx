@@ -27,6 +27,9 @@ import { FaEthereum } from 'react-icons/fa';
 import routes from 'routes';
 import { Image } from 'components/image/Image';
 
+// ** React Imports
+import { useSession } from "next-auth/react"
+
 import { signOut } from 'next-auth/react';
 
 export default function HeaderLinks(props: { secondary: boolean }) {
@@ -53,6 +56,8 @@ export default function HeaderLinks(props: { secondary: boolean }) {
 		});
 	}
 
+	const { data: session, status } = useSession()
+
 	return (
 		<Flex
 			w={{ sm: '100%', md: 'auto' }}
@@ -63,7 +68,7 @@ export default function HeaderLinks(props: { secondary: boolean }) {
 			p='10px'
 			borderRadius='30px'
 			boxShadow={shadow}>
-			<SearchBar
+			{/* <SearchBar
 				mb={() => {
 					if (secondary) {
 						return { base: '10px', md: 'unset' };
@@ -72,8 +77,8 @@ export default function HeaderLinks(props: { secondary: boolean }) {
 				}}
 				me='10px'
 				borderRadius='30px'
-			/>
-			<Flex
+			/> */}
+			{/* <Flex
 				bg={ethBg}
 				display={secondary ? 'flex' : 'none'}
 				borderRadius='30px'
@@ -91,9 +96,9 @@ export default function HeaderLinks(props: { secondary: boolean }) {
 						ETH
 					</Text>
 				</Text>
-			</Flex>
+			</Flex> */}
 			<SidebarResponsive routes={routes} />
-			<Menu>
+			{/* <Menu>
 				<MenuButton p='0px'>
 					<Icon mt='6px' as={MdNotificationsNone} color={navbarIcon} w='18px' h='18px' me='10px' />
 				</MenuButton>
@@ -124,12 +129,12 @@ export default function HeaderLinks(props: { secondary: boolean }) {
 						</MenuItem>
 					</Flex>
 				</MenuList>
-			</Menu>
+			</Menu> */}
 
 			<Menu>
-				<MenuButton p='0px'>
+				{/* <MenuButton p='0px'>
 					<Icon mt='6px' as={MdInfoOutline} color={navbarIcon} w='18px' h='18px' me='10px' />
-				</MenuButton>
+				</MenuButton> */}
 				<MenuList
 					boxShadow={shadow}
 					p='20px'
@@ -187,9 +192,10 @@ export default function HeaderLinks(props: { secondary: boolean }) {
 			<Menu>
 				<MenuButton p='0px'>
 					<Avatar
+						src={`${process.env.CLIENT_STORAGE_URL}/${session.user?.image}`}
 						_hover={{ cursor: 'pointer' }}
 						color='white'
-						name='Adela Parkson'
+						// name='Adela Parkson'
 						bg='#11047A'
 						size='sm'
 						w='40px'
@@ -208,16 +214,18 @@ export default function HeaderLinks(props: { secondary: boolean }) {
 							fontSize='sm'
 							fontWeight='700'
 							color={textColor}>
-							👋&nbsp; Hey, Adela
+							👋&nbsp; Hey, {
+								session?.user?.name
+							}
 						</Text>
 					</Flex>
 					<Flex flexDirection='column' p='10px'>
-						<MenuItem _hover={{ bg: 'none' }} _focus={{ bg: 'none' }} borderRadius='8px' px='14px'>
+						{/* <MenuItem _hover={{ bg: 'none' }} _focus={{ bg: 'none' }} borderRadius='8px' px='14px'>
 							<Text fontSize='sm'>Profile Settings</Text>
 						</MenuItem>
 						<MenuItem _hover={{ bg: 'none' }} _focus={{ bg: 'none' }} borderRadius='8px' px='14px'>
 							<Text fontSize='sm'>Newsletter Settings</Text>
-						</MenuItem>
+						</MenuItem> */}
 						<MenuItem
 							onClick={handleLogout}
 							_hover={{ bg: 'none' }}
