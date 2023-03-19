@@ -29,7 +29,7 @@ import { useSession } from "next-auth/react"
 import { SessionProvider } from "next-auth/react"
 
 // ** Next Router
-import Router from 'next/router'
+import Router,{ useRouter } from 'next/router'
 
 const App = props => {
   const { Component, pageProps: { session, ...pageProps } } = props
@@ -64,8 +64,17 @@ const App = props => {
 }
 
 function Auth({ children }) {
+  const router = useRouter()
+  
+  // if router name pages/login return children
+  if (router.pathname === '/pages/login') {
+    return children
+  }
+
   // if `{ required: true }` is supplied, `status` can only be "loading" or "authenticated"
   const { data: session, status } = useSession({ required: true })
+
+  // console.log(router)
 
   if (status === "loading") {
     return <div

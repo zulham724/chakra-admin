@@ -35,11 +35,11 @@ export default function Page() {
 
     const modules = {
         toolbar: [
-        [{ 'header': [1, 2, false] }],
-        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-        [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
-        ['link', 'image', 'video'],
-        ['clean'],
+            [{ 'header': [1, 2, false] }],
+            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+            ['link', 'image', 'video'],
+            ['clean'],
         ],
     };
 
@@ -52,47 +52,47 @@ export default function Page() {
 
     const onSubmit = async () => {
         Swal.fire({
-        title: 'Loading',
-        didOpen: () => {
-            Swal.showLoading()
-        }
+            title: 'Loading',
+            didOpen: () => {
+                Swal.showLoading()
+            }
         })
 
         try {
-        const formData = new FormData();
-        formData.append('title', post.title);
-        formData.append('body', post.body);
-        formData.append('excerpt', post.excerpt);
-        formData.append('status', post.status);
-        post.image ? formData.append('image', post.image[0]) : null
+            const formData = new FormData();
+            formData.append('title', post.title);
+            formData.append('body', post.body);
+            formData.append('excerpt', post.excerpt);
+            formData.append('status', post.status);
+            post.image ? formData.append('image', post.image[0]) : null
 
-        console.log(formData,post)
+            console.log(formData, post)
 
-        const { data } = await api.post(`/api/admin/post`, formData)
+            const { data } = await api.post(`/api/admin/post`, formData)
 
-        Swal.fire({
-            title: 'Success',
-            text: 'Artikel berhasil dibuat',
-            icon: 'success',
-            timer: 2000,
-        });
+            Swal.fire({
+                title: 'Success',
+                text: 'Artikel berhasil dibuat',
+                icon: 'success',
+                timer: 2000,
+            });
 
-        router.push('/articles')
+            router.push('/articles')
 
         } catch (error) {
-        Swal.fire({
-            title: 'Oops',
-            text: error.response?.data?.message,
-            icon: 'error',
-            timer: 2000,
-        });
+            Swal.fire({
+                title: 'Oops',
+                text: error.response?.data?.message,
+                icon: 'error',
+                timer: 2000,
+            });
         }
     }
 
     return (
         <AdminLayout>
             <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
-                 <Card
+                <Card
                     flexDirection='column'
                     w='100%'
                     p={'24px'}
@@ -105,31 +105,31 @@ export default function Page() {
                         <Flex py="12px">
                             <Input placeholder="Judul"
                                 value={post.title}
-            onChange={e => {
-              setPost({ ...post, title: e.target.value })
-            }}
+                                onChange={e => {
+                                    setPost({ ...post, title: e.target.value })
+                                }}
                             />
                         </Flex>
                         <Flex py="12px">
                             <Input placeholder="Singkat"
                                 value={post.excerpt}
-            onChange={e => {
-              setPost({ ...post, excerpt: e.target.value })
-            }}
+                                onChange={e => {
+                                    setPost({ ...post, excerpt: e.target.value })
+                                }}
                             />
                         </Flex>
                         <Flex py="12px">
                             <Select placeholder='Status'>
-  <option value='PUBLISHED'>PUBLISHED</option>
-  <option value='DRAFT'>DRAFT</option>
-</Select>
+                                <option value='PUBLISHED'>PUBLISHED</option>
+                                <option value='DRAFT'>DRAFT</option>
+                            </Select>
                         </Flex>
                         <Flex py="12px">
-                        <FilePicker
+                            <FilePicker
                                 onFileChange={(fileList) => {
                                     // do stuff here 
                                     setPost({
-                                        image:fileList
+                                        image: fileList
                                     })
                                 }}
                                 placeholder="Thumbnail"
@@ -137,17 +137,18 @@ export default function Page() {
                                 multipleFiles={true}
                                 accept="application/json"
                                 hideClearButton={false}
-                                // ref = { myRef }
+                            // ref = { myRef }
                             />
                         </Flex>
                         <Flex py="12px">
                             <ReactQuill modules={modules}
                                 formats={formats} theme="snow" value={post.body} onChange={value => {
-                                setPost({ ...post, body: value })
-                            }} />
+                                    setPost({ ...post, body: value })
+                                }} />
                         </Flex>
                         <Flex mt="48px" justifyContent="flex-end">
                             <Button
+                                onClick={onSubmit}
                                 colorScheme="purple"
                             >
                                 Simpan

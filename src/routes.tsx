@@ -9,11 +9,11 @@ import {
 
 // Admin Imports
 import MainDashboard from 'pages/admin/default'
-import NFTMarketplace from 'pages/admin/nft-marketplace'
-import Profile from 'pages/admin/profile'
-import DataTables from 'pages/admin/data-tables'
+// import NFTMarketplace from 'pages/admin/nft-marketplace'
+// import Profile from 'pages/admin/profile'
+// import DataTables from 'pages/admin/data-tables'
 import Post from 'pages/admin/post'
-import RTL from 'pages/rtl/rtl-default'
+// import RTL from 'pages/rtl/rtl-default'
 
 import { IRoute } from 'types/navigation'
 
@@ -47,13 +47,13 @@ const routes: IRoute[] = [
     path: '/post',
     component: Post
   },
-  {
-    name: 'Data Tables',
-    layout: '/admin',
-    icon: <Icon as={MdBarChart} width='20px' height='20px' color='inherit' />,
-    path: '/data-tables',
-    component: DataTables
-  },
+  // {
+  //   name: 'Data Tables',
+  //   layout: '/admin',
+  //   icon: <Icon as={MdBarChart} width='20px' height='20px' color='inherit' />,
+  //   path: '/data-tables',
+  //   component: DataTables
+  // },
   // {
   //   name: 'Profile',
   //   layout: '/admin',

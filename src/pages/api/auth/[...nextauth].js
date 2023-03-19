@@ -100,7 +100,7 @@ export const authOptions = {
         }
     },
     pages: {
-        // signIn: '/pages/login',
+        signIn: '/pages/login',
         // signOut: '/pages/',
         error: '/pages/error', // Error code passed in query string as ?error=
         unprotectedRoutes: ['/pages/login'],
