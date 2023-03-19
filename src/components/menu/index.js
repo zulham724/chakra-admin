@@ -85,7 +85,7 @@ export default function Banner(props) {
                                 }}
                                 mb='10px'>
                                 <Flex align='center'>
-                                    <Icon as={MdOutlinePerson} h='16px' w='16px' me='8px' />
+                                    {/* <Icon as={MdOutlinePerson} h='16px' w='16px' me='8px' /> */}
                                     <Text fontSize='sm' fontWeight='400'>
                                         {action.label}
                                     </Text>

@@ -24,6 +24,7 @@
     "draft-js": "^0.11.7",
     "framer-motion": "^4.1.17",
     "lottie-react": "^2.4.0",
+    "moment": "^2.29.4",
     "next": "^12.2.5",
     "next-auth": "^4.19.2",
     "react": "^17.0.2",

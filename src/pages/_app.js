@@ -34,9 +34,9 @@ import Router,{ useRouter } from 'next/router'
 const App = props => {
   const { Component, pageProps: { session, ...pageProps } } = props
 
-  const getLayout = Component.getLayout ?? (page => {
+  const router = useRouter()
 
-    const router = useRouter()
+  const getLayout = Component.getLayout ?? (page => {
 
     if (router.pathName === "/pages/login") {
       return page
