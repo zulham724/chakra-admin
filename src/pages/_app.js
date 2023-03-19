@@ -82,17 +82,17 @@ function Auth({ children }) {
     // return <Loading />
   }
 
-  if (status === "unauthenticated") {
-    // Router.push('/pages/login')
-    return <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh'
-      }}
-    >Unauthenticated</div>
-  }
+  // if (status === "unauthenticated") {
+  //   // Router.push('/pages/login')
+  //   return <div
+  //     style={{
+  //       display: 'flex',
+  //       justifyContent: 'center',
+  //       alignItems: 'center',
+  //       height: '100vh'
+  //     }}
+  //   >Unauthenticated</div>
+  // }
 
   if (status === "authenticated") {
     // console.log('authenticated', session)
