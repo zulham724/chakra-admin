@@ -35,6 +35,13 @@ const App = props => {
   const { Component, pageProps: { session, ...pageProps } } = props
 
   const getLayout = Component.getLayout ?? (page => {
+
+    const router = useRouter()
+
+    if (router.pathName === "/pages/login") {
+      return page
+    }
+
     return (
       <Auth>
         {page}
@@ -64,11 +71,8 @@ const App = props => {
 }
 
 function Auth({ children }) {
-  const router = useRouter()
   // if `{ required: true }` is supplied, `status` can only be "loading" or "authenticated"
-  const { data: session, status } = useSession({ required: router.pathname === '/pages/login' ? false : true })
-
-  // console.log(router)
+  const { data: session, status } = useSession({ required: true })
 
   if (status === "loading") {
     return <div
@@ -82,17 +86,17 @@ function Auth({ children }) {
     // return <Loading />
   }
 
-  // if (status === "unauthenticated") {
-  //   // Router.push('/pages/login')
-  //   return <div
-  //     style={{
-  //       display: 'flex',
-  //       justifyContent: 'center',
-  //       alignItems: 'center',
-  //       height: '100vh'
-  //     }}
-  //   >Unauthenticated</div>
-  // }
+  if (status === "unauthenticated") {
+    // Router.push('/pages/login')
+    return <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh'
+      }}
+    >Unauthenticated</div>
+  }
 
   if (status === "authenticated") {
     // console.log('authenticated', session)
