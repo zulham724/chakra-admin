@@ -17,15 +17,11 @@ import {
 
 import {
     useQuery,
-    useMutation,
     useQueryClient,
-    QueryClient,
     QueryClientProvider,
 } from 'react-query'
 
 import ReactPaginate from 'react-paginate';
-
-import theme from 'theme/styles'
 
 import React, { useMemo } from 'react'
 import {
@@ -43,39 +39,12 @@ import { useDebounce } from 'use-debounce';
 
 // Custom components
 import Card from 'components/card/Card'
-import Menu from 'components/menu/MainMenu'
-import { TableProps } from 'views/admin/default/variables/columnsData'
 
 import Row from './Row'
 
 export default function ColumnsTable(props) {
 
     const queryClient = useQueryClient()
-
-    const { columnsData, tableData } = props
-
-    const columns = useMemo(() => columnsData, [columnsData])
-    const data = useMemo(() => tableData, [tableData])
-
-    const tableInstance = useTable(
-        {
-            columns,
-            data
-        },
-        useGlobalFilter,
-        useSortBy,
-        usePagination
-    )
-
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        page,
-        prepareRow,
-        initialState
-    } = tableInstance
-    initialState.pageSize = 5
 
     const textColor = useColorModeValue('secondaryGray.900', 'white')
     const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100')
@@ -135,17 +104,11 @@ export default function ColumnsTable(props) {
 
     const { isLoading, isError, data: items, error } = useQuery('fetchPosts', _fetchData)
 
-
-    if (isLoading) {
-        return <div>Loading...</div>
-    }
-
-    if (isError) {
-        return <div>Error: {error.message}</div>
-    }
-
     React.useEffect(() => {
-        queryClient.prefetchQuery('fetchPosts', _fetchData)
+        function run(){
+            queryClient.prefetchQuery('fetchPosts', _fetchData)
+        }
+        run()
     }, [queries])
 
     React.useEffect(() => {
@@ -155,9 +118,13 @@ export default function ColumnsTable(props) {
         })
     }, [debouncedSearch])
 
-    // const handleCreate = async () => {
-    //     router.push('/articles/create')
-    // }
+    if (isLoading) {
+        return <div>Loading...</div>
+    }
+
+    if (isError) {
+        return <div>Error: {error.message}</div>
+    }
 
     return (
         <QueryClientProvider client={queryClient}>
@@ -202,7 +169,7 @@ export default function ColumnsTable(props) {
                     </GridItem>
 
                 </Grid>
-                <Table {...getTableProps()} variant='simple' color='gray.500' mb='24px'>
+                <Table variant='simple' color='gray.500' mb='24px'>
                     <Thead>
                         <Tr>
                             <Th
@@ -272,7 +239,7 @@ export default function ColumnsTable(props) {
                             </Th>
                         </Tr>
                     </Thead>
-                    <Tbody {...getTableBodyProps()}>
+                    <Tbody>
                         {
                             items.map(item => {
                                 return (
