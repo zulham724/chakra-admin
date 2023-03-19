@@ -65,14 +65,8 @@ const App = props => {
 
 function Auth({ children }) {
   const router = useRouter()
-  
-  // if router name pages/login return children
-  if (router.pathname === '/pages/login') {
-    return children
-  }
-
   // if `{ required: true }` is supplied, `status` can only be "loading" or "authenticated"
-  const { data: session, status } = useSession({ required: true })
+  const { data: session, status } = useSession({ required: router.pathname === '/pages/login' ? false : true })
 
   // console.log(router)
 
