@@ -16,6 +16,8 @@ import 'react-calendar/dist/Calendar.css'
 import 'styles/MiniCalendar.css'
 import Head from 'next/head'
 
+import Lottie from 'lottie-react'
+
  // Create a client
  const queryClient = new QueryClient()
 
@@ -37,8 +39,8 @@ const App = props => {
   const router = useRouter()
 
   const getLayout = Component.getLayout ?? (page => {
-
-    if (router.pathName === "/pages/login") {
+    // return console.log(router)
+    if (router.pathname === "/pages/login") {
       return page
     }
 
@@ -82,7 +84,17 @@ function Auth({ children }) {
         alignItems: 'center',
         height: '100vh'
       }}
-    >Loading</div>
+    >
+      <Lottie
+        animationData={require('assets/lottie/loading.json')}
+        loop
+        autoPlay
+        style={{
+          width: 200,
+          height: 200
+        }}
+      />
+    </div>
     // return <Loading />
   }
 
