@@ -23,13 +23,7 @@ import {
 
 import ReactPaginate from 'react-paginate';
 
-import React, { useMemo } from 'react'
-import {
-    useGlobalFilter,
-    usePagination,
-    useSortBy,
-    useTable
-} from 'react-table'
+import React from 'react'
 
 import api from 'services/api'
 
@@ -52,15 +46,15 @@ export default function ColumnsTable(props) {
     const [pageCount, setPageCount] = React.useState(0)
     const [total, setTotal] = React.useState(null)
     const [from, setFrom] = React.useState(0)
-    const [to, setTo] = React.useState(0);
+    const [to, setTo] = React.useState(0)
 
-    const [perPages, setPerPages] = React.useState([
+    const perPages = [
         { value: 5, label: '5' },
         { value: 10, label: '10' },
         { value: 15, label: '15' },
         { value: 20, label: '20' },
         { value: 25, label: '25' },
-    ])
+    ]
 
     const [search, setSearch] = React.useState('')
 
@@ -89,7 +83,7 @@ export default function ColumnsTable(props) {
         }, '?')
 
         const { data } = await api.get(`api/admin/post${query}`)
-        const { data: results, next_page_url: nextPageUrl, current_page, last_page, total, per_page, from, to } = data
+        const { data: results, total, from, to } = data
 
         setTotal(total)
         setFrom(from)
@@ -112,10 +106,13 @@ export default function ColumnsTable(props) {
     }, [queries])
 
     React.useEffect(() => {
-        setQueries({
-            ...queries,
-            search: debouncedSearch
-        })
+        function run(){
+            setQueries({
+                ...queries,
+                search: debouncedSearch
+            })
+        }
+        run()
     }, [debouncedSearch])
 
     if (isLoading) {
@@ -241,9 +238,9 @@ export default function ColumnsTable(props) {
                     </Thead>
                     <Tbody>
                         {
-                            items.map(item => {
+                            items.map((item,index) => {
                                 return (
-                                    <Row item={item} />
+                                    <Row item={item} key={index} />
                                 )
                             })
                         }

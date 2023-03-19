@@ -67,9 +67,10 @@ export default function Banner(props) {
                 borderRadius='20px'
                 p='15px'>
                 {
-                    actions.map(action=>{
+                    actions.map((action,index)=>{
                         return (
                             <MenuItem
+                                key={index}
                                 onClick={action.onClick}
                                 transition='0.2s linear'
                                 color={textColor}

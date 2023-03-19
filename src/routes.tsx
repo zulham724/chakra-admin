@@ -12,7 +12,7 @@ import MainDashboard from 'pages/admin/default'
 import NFTMarketplace from 'pages/admin/nft-marketplace'
 import Profile from 'pages/admin/profile'
 import DataTables from 'pages/admin/data-tables'
-import Post from 'pages/admin/Post'
+import Post from 'pages/admin/post'
 import RTL from 'pages/rtl/rtl-default'
 
 import { IRoute } from 'types/navigation'
