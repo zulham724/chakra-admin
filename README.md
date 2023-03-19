@@ -27,7 +27,7 @@ https://chakra-admin.vercel.app
 
 ## Environment Variables
 
-To run this project, you will need to add the following environment variables to your .env file
+Edit variabel env di next.config.js
 
 `CLIENT_API_URL = https://phpstack-469989-2205733.cloudwaysapps.com`
 
@@ -53,7 +53,7 @@ To run this project, you will need to add the following environment variables to
 
 ## Installation
 
-Install using npm
+Install dengan npm
 
 ```bash
   cd my-project
@@ -62,7 +62,7 @@ Install using npm
   npm run dev
 ```
 
-Install using yarn
+Install dengan yarn
 
 ```bash
   cd my-project
