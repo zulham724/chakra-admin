@@ -60,9 +60,11 @@ import AdminLayout from 'layouts/admin'
 import { Image } from 'components/image/Image'
 import Usa from 'img/dashboards/usa.png'
 
+// ** React Imports
+import { useSession } from "next-auth/react"
+
 export default function UserReports () {
   // Chakra Color Mode
-
   const brandColor = useColorModeValue('brand.500', 'white')
   const boxBg = useColorModeValue('secondaryGray.300', 'whiteAlpha.100')
 

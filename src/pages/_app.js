@@ -7,9 +7,17 @@ import 'styles/Fonts.css'
 import 'styles/App.css'
 import 'styles/Contact.css'
 
+ import {
+   QueryClient,
+   QueryClientProvider,
+ } from 'react-query'
+
 import 'react-calendar/dist/Calendar.css'
 import 'styles/MiniCalendar.css'
 import Head from 'next/head'
+
+ // Create a client
+ const queryClient = new QueryClient()
 
 // ** services
 import api from 'services/api'
@@ -20,25 +28,38 @@ import { useSession } from "next-auth/react"
 // ** Next Auth
 import { SessionProvider } from "next-auth/react"
 
-function MyApp ({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+// ** Next Router
+import Router from 'next/router'
+
+const App = props => {
+  const { Component, pageProps: { session, ...pageProps } } = props
+
+  const getLayout = Component.getLayout ?? (page => {
+    return (
+      <Auth>
+        {page}
+      </Auth>
+    )
+  })
+
   return (
-    <ChakraProvider theme={theme}>
-      <Head>
-        <title>Horizon UI Dashboard</title>
-        <meta name='viewport' content='width=device-width, initial-scale=1' />
-        <meta name='theme-color' content='#000000' />
-      </Head>
-      <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <ChakraProvider theme={theme}>
+        <Head>
+          <title>Horizon UI Dashboard</title>
+          <meta name='viewport' content='width=device-width, initial-scale=1' />
+          <meta name='theme-color' content='#000000' />
+        </Head>
         <SessionProvider
           session={session}
-          // basePath={'http://localhost:3000'}
         >
-          <Auth>
-            <Component {...pageProps} />
-          </Auth>
+          <React.StrictMode>
+            {/* <Component {...pageProps} /> */}
+            {getLayout(<Component {...pageProps} />)}
+          </React.StrictMode>
         </SessionProvider>
-      </React.StrictMode>
-    </ChakraProvider>
+      </ChakraProvider>
+    </QueryClientProvider>
   )
 }
 
@@ -46,11 +67,20 @@ function Auth({ children }) {
   // if `{ required: true }` is supplied, `status` can only be "loading" or "authenticated"
   const { data: session, status } = useSession({ required: true })
 
-  // if (status === "loading") {
-  //   return <Loading />
-  // }
+  if (status === "loading") {
+    return <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh'
+      }}
+    >Loading</div>
+    // return <Loading />
+  }
 
   if (status === "unauthenticated") {
+    // Router.push('/pages/login')
     return <div
       style={{
         display: 'flex',
@@ -66,8 +96,7 @@ function Auth({ children }) {
     api.defaults.headers.Authorization = `Bearer ${session.accessToken}`
   }
 
-
   return children
 }
 
-export default MyApp
+export default App

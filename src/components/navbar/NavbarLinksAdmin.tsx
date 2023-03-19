@@ -26,6 +26,9 @@ import { IoMdMoon, IoMdSunny } from 'react-icons/io';
 import { FaEthereum } from 'react-icons/fa';
 import routes from 'routes';
 import { Image } from 'components/image/Image';
+
+import { signOut } from 'next-auth/react';
+
 export default function HeaderLinks(props: { secondary: boolean }) {
 	const { secondary } = props;
 	const { colorMode, toggleColorMode } = useColorMode();
@@ -43,6 +46,13 @@ export default function HeaderLinks(props: { secondary: boolean }) {
 		'14px 17px 40px 4px rgba(112, 144, 176, 0.06)'
 	);
 	const borderButton = useColorModeValue('secondaryGray.500', 'whiteAlpha.200');
+
+	const handleLogout = async () => {
+		signOut({
+			callbackUrl: '/pages/login'
+		});
+	}
+
 	return (
 		<Flex
 			w={{ sm: '100%', md: 'auto' }}
@@ -209,6 +219,7 @@ export default function HeaderLinks(props: { secondary: boolean }) {
 							<Text fontSize='sm'>Newsletter Settings</Text>
 						</MenuItem>
 						<MenuItem
+							onClick={handleLogout}
 							_hover={{ bg: 'none' }}
 							_focus={{ bg: 'none' }}
 							color='red.400'
