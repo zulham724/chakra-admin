@@ -24,14 +24,25 @@ import Swal from 'sweetalert2'
 
 import 'react-quill/dist/quill.snow.css';
 
+import { useForm } from 'react-hook-form';
+
+import api from 'services/api'
+
+import {useRouter} from 'next/router'
+
 export default function Page() {
 
-    const [post, setPost] = React.useState({
-        title: '',
-        excerpt: '',
-        body: '',
-        status: ''
-    })
+    const router = useRouter()
+
+    const [file, setFile] = React.useState(null)
+
+    const [body, setBody] = React.useState("")
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
 
     const modules = {
         toolbar: [
@@ -50,7 +61,11 @@ export default function Page() {
         'link', 'image', 'video'
     ];
 
-    const onSubmit = async () => {
+    const onSubmit = async (data) => {
+        console.log(data)
+
+        const {title, excerpt, status} = data
+        
         Swal.fire({
             title: 'Loading',
             didOpen: () => {
@@ -60,13 +75,13 @@ export default function Page() {
 
         try {
             const formData = new FormData();
-            formData.append('title', post.title);
-            formData.append('body', post.body);
-            formData.append('excerpt', post.excerpt);
-            formData.append('status', post.status);
-            post.image ? formData.append('image', post.image[0]) : null
+            formData.append('title', title);
+            formData.append('body', body);
+            formData.append('excerpt', excerpt);
+            formData.append('status', status);
+            file ? formData.append('image', file) : null
 
-            console.log(formData, post)
+            console.log(formData)
 
             const { data } = await api.post(`/api/admin/post`, formData)
 
@@ -77,9 +92,10 @@ export default function Page() {
                 timer: 2000,
             });
 
-            router.push('/articles')
+            router.push('/admin/post')
 
         } catch (error) {
+            console.log(error)
             Swal.fire({
                 title: 'Oops',
                 text: error.response?.data?.message,
@@ -102,53 +118,69 @@ export default function Page() {
                         <Text>Buat Post Baru </Text>
                     </Flex>
                     <Box py="24px">
-                        <Flex py="12px">
+                        <Flex py="12px"
+                            flexDirection="column"
+                        >
                             <Input placeholder="Judul"
-                                value={post.title}
-                                onChange={e => {
-                                    setPost({ ...post, title: e.target.value })
-                                }}
+                                // value={post.title}
+                                // onChange={e => {
+                                //     setPost({ ...post, title: e.target.value })
+                                // }}
+                                {...register('title',{required:true})}
                             />
+                            {errors.title && <Text>Harus diisi.</Text>}
                         </Flex>
-                        <Flex py="12px">
+                        <Flex py="12px" flexDirection="column">
                             <Input placeholder="Singkat"
-                                value={post.excerpt}
-                                onChange={e => {
-                                    setPost({ ...post, excerpt: e.target.value })
-                                }}
+                                // value={post.excerpt}
+                                // onChange={e => {
+                                //     setPost({ ...post, excerpt: e.target.value })
+                                // }}
+                                {...register('excerpt',{required:true})}
                             />
+                            {errors.excerpt && <Text>Harus diisi.</Text>}
                         </Flex>
-                        <Flex py="12px">
-                            <Select placeholder='Status'>
+                        <Flex py="12px" flexDirection="column">
+                            <Select placeholder='Status'
+                                {...register('status',{required:true})}
+                            >
                                 <option value='PUBLISHED'>PUBLISHED</option>
                                 <option value='DRAFT'>DRAFT</option>
                             </Select>
+                            {errors.status && <Text>Harus diisi.</Text>}
                         </Flex>
-                        <Flex py="12px">
+                        <Flex py="12px" flexDirection="column">
                             <FilePicker
                                 onFileChange={(fileList) => {
                                     // do stuff here 
-                                    setPost({
-                                        image: fileList
-                                    })
+                                    // setFile()
+                                    // console.log(fileList)
+                                    setFile(fileList[0])
                                 }}
+                                value={file}
                                 placeholder="Thumbnail"
                                 clearButtonLabel="Clear"
-                                multipleFiles={true}
-                                accept="application/json"
+                                multipleFiles={false}
+                                // accept="application/json"
                                 hideClearButton={false}
+
                             // ref = { myRef }
-                            />
+                            />  
                         </Flex>
-                        <Flex py="12px">
+                        <Flex py="12px" flexDirection="column">
                             <ReactQuill modules={modules}
-                                formats={formats} theme="snow" value={post.body} onChange={value => {
-                                    setPost({ ...post, body: value })
-                                }} />
+                                formats={formats} theme="snow" 
+                                value={body} 
+                                onChange={value => {
+                                    setBody(value)
+                                }} 
+                                />
                         </Flex>
                         <Flex mt="48px" justifyContent="flex-end">
                             <Button
-                                onClick={onSubmit}
+                                onClick={
+                                    handleSubmit(data=>onSubmit(data))
+                                }
                                 colorScheme="purple"
                             >
                                 Simpan

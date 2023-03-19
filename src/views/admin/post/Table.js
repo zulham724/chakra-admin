@@ -21,6 +21,8 @@ import {
     QueryClientProvider,
 } from 'react-query'
 
+import Swal from 'sweetalert2'
+
 import ReactPaginate from 'react-paginate';
 
 import React from 'react'
@@ -60,7 +62,7 @@ export default function ColumnsTable(props) {
 
     const [queries, setQueries] = React.useState({
         page: 1,
-        per_page: 15,
+        per_page: 5,
         search: '',
         status: ''
     })
@@ -114,6 +116,32 @@ export default function ColumnsTable(props) {
         }
         run()
     }, [debouncedSearch])
+
+    const handleDelete = id => {
+        Swal.fire({
+            title: 'Apa anda yakin?',
+            text: 'Post tidak akan bisa dikembalikan!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                api.post(`/api/admin/post/${id}`, {
+                    _method: 'delete'
+                }).then((res) => {
+                    queryClient.prefetchQuery('fetchPosts', _fetchData)
+
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                })
+            }
+        })
+    }
 
     if (isLoading) {
         return <div>Loading...</div>
@@ -240,7 +268,7 @@ export default function ColumnsTable(props) {
                         {
                             items.map((item,index) => {
                                 return (
-                                    <Row item={item} key={index} />
+                                    <Row item={item} key={index} onDelete={handleDelete}/>
                                 )
                             })
                         }
@@ -284,7 +312,10 @@ export default function ColumnsTable(props) {
                     marginPagesDisplayed={2}
                     pageRangeDisplayed={5}
                     onPageChange={event => {
-                        alert(event.selected + 1)
+                        setQueries({
+                            ...queries,
+                            page: event.selected + 1
+                        })
                     }}
                     containerClassName={"pagination"}
                     subContainerClassName={"pages pagination"}

@@ -15,7 +15,7 @@ import {
 
 import Menu from 'components/menu'
 
-const Component = ({ item }) => {
+const Component = ({ item, onDelete }) => {
 
   const [post, setPost] = React.useState(null)
 
@@ -94,7 +94,7 @@ const Component = ({ item }) => {
         }, {
           label: 'Delete',
           onClick: () => {
-            alert('Delete click')
+            onDelete && onDelete(post.id)
           }
         }]} />
       </Td>
